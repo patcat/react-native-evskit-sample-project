@@ -1,4 +1,4 @@
-# Sample EvsKit Project
+# React Native EvsKit Sample Project
 
 This is a sample project to link to the Everysight Maverick SDK via the [react-native-evskit](https://github.com/patcat/react-native-evskit).
 
