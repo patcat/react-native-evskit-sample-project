@@ -1,5 +1,3 @@
-import type { Post } from '../api';
-
 import { Link } from 'expo-router';
 import * as React from 'react';
 
@@ -13,7 +11,11 @@ const images = [
   'https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?auto=format&fit=crop&w=800&q=80',
 ];
 
-type Props = Post;
+type Props = {
+  id: string;
+  title: string;
+  body: string;
+};
 
 export function PostCard({ title, body, id }: Props) {
   return (
