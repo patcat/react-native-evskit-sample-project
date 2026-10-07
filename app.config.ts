@@ -38,7 +38,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic',
-  newArchEnabled: true,
   updates: {
     fallbackToCacheTimeout: 0,
   },
@@ -65,6 +64,17 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundler: 'metro',
   },
   plugins: [
+    [
+      'expo-build-properties',
+      {
+        android: {
+          compileSdkVersion: 36,
+          targetSdkVersion: 36,
+          buildToolsVersion: '36.0.0',
+          kotlinVersion: '2.0.21',
+        },
+      },
+    ],
     [
       'expo-splash-screen',
       {

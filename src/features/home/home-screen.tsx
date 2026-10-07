@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { EvsComm, EvsDisplay, EvsKit, EvsSensors } from 'react-native-evskit';
 import { FocusAwareStatusBar, Text, View } from '@/components/ui';
-import { EvsKit, EvsComm, EvsGlasses, EvsDisplay, EvsSensors, useEvsKitEvent } from 'react-native-evskit';
 
 export function HomeScreen() {
   React.useEffect(() => {
@@ -9,7 +9,8 @@ export function HomeScreen() {
 
       if (await EvsComm.hasConfiguredDevice()) {
         await EvsComm.connect();
-      } else {
+      }
+      else {
         // Simplest path: let the SDK's own scan/pair UI handle it
         await EvsKit.ui.show('configure');
       }
