@@ -2,25 +2,46 @@ import type { ConfigContext, ExpoConfig } from '@expo/config';
 
 import type { AppIconBadgeConfig } from 'app-icon-badge/types';
 
-import 'tsx/cjs';
+// NOTE: This config is intentionally self-contained — it must NOT import
+// './env' (which pulls in zod). EAS evaluates app.config.ts on the builder
+// before/without full node_modules, so that import fails with
+// "Cannot find module '.../env'". Keep only static requires here.
 
-// adding lint exception as we need to import tsx/cjs before env.ts is imported
-// eslint-disable-next-line perfectionist/sort-imports
-import Env from './env';
+const packageJSON = require('./package.json') as { version: string };
 
-const EXPO_ACCOUNT_OWNER = 'obytes';
-const EAS_PROJECT_ID = 'c3e1075b-6fe7-4686-aa49-35b46a229044';
+type AppEnv = 'development' | 'preview' | 'production';
+const APP_ENV = (process.env.EXPO_PUBLIC_APP_ENV ?? 'development') as AppEnv;
+
+const BUNDLE_IDS = {
+  development: 'com.sampleevskitproject.development',
+  preview: 'com.sampleevskitproject.preview',
+  production: 'com.sampleevskitproject',
+} as const;
+
+const PACKAGES = {
+  development: 'com.sampleevskitproject.development',
+  preview: 'com.sampleevskitproject.preview',
+  production: 'com.sampleevskitproject',
+} as const;
+
+const SCHEMES = {
+  development: 'SampleEvsKitProject',
+  preview: 'SampleEvsKitProject.preview',
+  production: 'SampleEvsKitProject',
+} as const;
+
+const NAME = 'SampleEvsKitProject';
 
 const appIconBadgeConfig: AppIconBadgeConfig = {
-  enabled: Env.EXPO_PUBLIC_APP_ENV !== 'production',
+  enabled: APP_ENV !== 'production',
   badges: [
     {
-      text: Env.EXPO_PUBLIC_APP_ENV,
+      text: APP_ENV,
       type: 'banner',
       color: 'white',
     },
     {
-      text: Env.EXPO_PUBLIC_VERSION.toString(),
+      text: packageJSON.version.toString(),
       type: 'ribbon',
       color: 'white',
     },
@@ -29,12 +50,12 @@ const appIconBadgeConfig: AppIconBadgeConfig = {
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: Env.EXPO_PUBLIC_NAME,
-  description: `${Env.EXPO_PUBLIC_NAME} Mobile App`,
-  owner: EXPO_ACCOUNT_OWNER,
-  scheme: Env.EXPO_PUBLIC_SCHEME,
-  slug: 'obytesapp',
-  version: Env.EXPO_PUBLIC_VERSION.toString(),
+  name: NAME,
+  description: `${NAME} Mobile App`,
+  owner: 'therealitycrafters',
+  scheme: SCHEMES[APP_ENV],
+  slug: 'reactnativeevskitsampleproject',
+  version: packageJSON.version.toString(),
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic',
@@ -44,7 +65,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   assetBundlePatterns: ['**/*'],
   ios: {
     supportsTablet: true,
-    bundleIdentifier: Env.EXPO_PUBLIC_BUNDLE_ID,
+    bundleIdentifier: BUNDLE_IDS[APP_ENV],
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
     },
@@ -57,7 +78,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#2E3C4B',
     },
-    package: Env.EXPO_PUBLIC_PACKAGE,
+    package: PACKAGES[APP_ENV],
   },
   web: {
     favicon: './assets/favicon.png',
@@ -129,7 +150,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ],
   extra: {
     eas: {
-      projectId: EAS_PROJECT_ID,
+      projectId: '7920fb79-5f4f-4fb5-b138-19329f1ae4c9',
     },
   },
 });
