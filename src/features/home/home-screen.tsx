@@ -1,5 +1,5 @@
+import { EvsComm, EvsDisplay, EvsKit, EvsSensors } from '@therealitycrafters/react-native-evskit';
 import * as React from 'react';
-import { EvsComm, EvsDisplay, EvsKit, EvsSensors } from 'react-native-evskit';
 import { FocusAwareStatusBar, Text, View } from '@/components/ui';
 
 export function HomeScreen() {
