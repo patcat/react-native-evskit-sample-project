@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import type { ConfigContext, ExpoConfig } from '@expo/config';
 
 import type { AppIconBadgeConfig } from 'app-icon-badge/types';
@@ -68,6 +69,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundleIdentifier: BUNDLE_IDS[APP_ENV],
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
+      NSBluetoothAlwaysUsageDescription: 'Scan and connect to Everysight glasses.',
+      NSBluetoothPeripheralUsageDescription: 'Connect with Everysight BLE device',
+      UIBackgroundModes: ['bluetooth-central'],
     },
   },
   experiments: {
@@ -79,6 +83,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: '#2E3C4B',
     },
     package: PACKAGES[APP_ENV],
+    permissions: [
+      'android.permission.BLUETOOTH_SCAN',
+      'android.permission.BLUETOOTH_CONNECT',
+      'android.permission.ACCESS_COARSE_LOCATION',
+      'android.permission.ACCESS_FINE_LOCATION',
+    ],
   },
   web: {
     favicon: './assets/favicon.png',
